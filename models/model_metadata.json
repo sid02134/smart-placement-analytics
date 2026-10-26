@@ -1,0 +1,22 @@
+{
+    "target": "PlacementStatus",
+    "features": [
+        "CGPA",
+        "Internships",
+        "Projects",
+        "Workshops/Certifications",
+        "AptitudeTestScore",
+        "SoftSkillsRating",
+        "ExtracurricularActivities",
+        "PlacementTraining",
+        "SSC_Marks",
+        "HSC_Marks"
+    ],
+    "positive_class": 1,
+    "positive_class_label": "Placed",
+    "risk_thresholds": {
+        "low_max": 0.3,
+        "medium_max": 0.6
+    },
+    "model_name": "Tuned Logistic Regression"
+}

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Placement Prediction & Career Analytics System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">SmartPlacement<span class="gradient-text">Analytics</span></span>
+                    <span class="brand-badge">College DS Capstone</span>
+                </div>
+            </div>
+
+            <nav class="nav-links">
+                <a href="#overview" class="nav-item active">Overview</a>
+                <a href="#predictor" class="nav-item">Predictor</a>
+                <a href="#what-if" class="nav-item">What-If Lab</a>
+                <a href="#recommendations" class="nav-item">Career Guidance</a>
+                <a href="#models" class="nav-item">Model Benchmarks</a>
+                <a href="#shap-risk" class="nav-item">SHAP & Risk</a>
+                <a href="#eda-gallery" class="nav-item">EDA Gallery</a>
+            </nav>
+
+            <div class="nav-status">
+                <div class="status-indicator">
+                    <span class="pulse-dot"></span>
+                    <span class="status-text" id="api-status-text">Model Active (LogReg)</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="main-content">
+
+        <!-- 1. HERO / OVERVIEW SECTION -->
+        <section id="overview" class="section hero-section">
+            <div class="hero-header">
+                <div class="hero-pill">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <span>Machine Learning Intelligence & Decision Support</span>
+                </div>
+                <h1 class="hero-title">Smart Placement Prediction & <span class="gradient-text">Career Analytics</span></h1>
+                <p class="hero-desc">
+                    An advanced predictive and prescriptive decision support system built on historical student performance data. 
+                    Accurately predicts placement outcomes, stratifies non-placement risk, calculates dynamic what-if improvements, and delivers personalized career interventions.
+                </p>
+            </div>
+
+            <!-- KEY STATS CARDS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper cyan">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-model-acc">80.20%</span>
+                        <span class="stat-label">Model Validation Accuracy</span>
+                        <span class="stat-sub">Tuned Logistic Regression (ROC-AUC: 0.88)</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper indigo">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-total-records">9,928</span>
+                        <span class="stat-label">Total Student Records</span>
+                        <span class="stat-sub">6,353 Train • 1,591 Val • 1,984 Test</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper emerald">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value">10 Features</span>
+                        <span class="stat-label">Validated Predictors</span>
+                        <span class="stat-sub">Aptitude, Academics, Skills & Experience</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper amber">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-risk-split">33.3% / 46.2%</span>
+                        <span class="stat-label">Test Cohort Risk Split</span>
+                        <span class="stat-sub">1,984 Test Students • Low (&le;0.30) vs High (&gt;0.60)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DATASET PARTITIONING & CLASS DISTRIBUTION -->
+            <div class="glass-card dataset-summary-card">
+                <div class="dataset-summary-header">
+                    <div>
+                        <h3 class="dataset-card-title">Dataset Partitioning & Historical Placement Distribution</h3>
+                        <p class="dataset-card-subtitle">Complete data breakdown across 9,928 total records partitioned for model training, tuning, and out-of-sample risk evaluation.</p>
+                    </div>
+                    <div class="quality-badge">
+                        <span class="check-icon">&#10003;</span> 0 Missing Values • 0 Duplicates
+                    </div>
+                </div>
+
+                <div class="dataset-partitions-grid">
+                    <div class="partition-item">
+                        <div class="partition-top">
+                            <span class="partition-name">Training Set</span>
+                            <span class="partition-pill indigo">64.0% Split</span>
+                        </div>
+                        <span class="partition-count">6,353 Students</span>
+                        <span class="partition-desc">Model fitting & feature engineering</span>
+                    </div>
+
+                    <div class="partition-item">
+                        <div class="partition-top">
+                            <span class="partition-name">Validation Set</span>
+                            <span class="partition-pill cyan">16.0% Split</span>
+                        </div>
+                        <span class="partition-count">1,591 Students</span>
+                        <span class="partition-desc">10-Model benchmarking & hyperparameter tuning</span>
+                    </div>
+
+                    <div class="partition-item">
+                        <div class="partition-top">
+                            <span class="partition-name">Test Set</span>
+                            <span class="partition-pill emerald">20.0% Split</span>
+                        </div>
+                        <span class="partition-count">1,984 Students</span>
+                        <span class="partition-desc">Out-of-sample risk stratification & scenario testing</span>
+                    </div>
+                </div>
+
+                <div class="class-balance-section">
+                    <div class="class-balance-labels">
+                        <span class="class-label placed">
+                            <span class="class-dot green"></span>
+                            Training Placed: <strong>2,611 students (41.1%)</strong>
+                        </span>
+                        <span class="class-label not-placed">
+                            <span class="class-dot red"></span>
+                            Training Not Placed: <strong>3,742 students (58.9%)</strong>
+                        </span>
+                    </div>
+                    <div class="class-balance-bar">
+                        <div class="class-bar-fill placed" style="width: 41.1%;" title="Placed: 2,611 (41.1%)"></div>
+                        <div class="class-bar-fill not-placed" style="width: 58.9%;" title="Not Placed: 3,742 (58.9%)"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. INTERACTIVE PREDICTOR & RESULT LAB -->
+        <section id="predictor" class="section">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <h2 class="section-title">Interactive Placement Predictor</h2>
+                    <p class="section-subtitle">Enter student academic and aptitude metrics to obtain real-time placement probability, classification, and risk categorization.</p>
+                </div>
+
+                <!-- PRESET BUTTONS -->
+                <div class="presets-toolbar">
+                    <span class="preset-label">Load Profile Presets:</span>
+                    <button type="button" class="btn-preset at-risk" id="btn-preset-at-risk" title="Load High-Risk Profile from Test Set Row 1">
+                        <span class="preset-dot red"></span> High-Risk Student
+                    </button>
+                    <button type="button" class="btn-preset placed" id="btn-preset-placed" title="Load Strong Placement Profile from Test Set Row 2">
+                        <span class="preset-dot green"></span> Placed Student
+                    </button>
+                    <button type="button" class="btn-preset borderline" id="btn-preset-borderline" title="Load Borderline Student Profile">
+                        <span class="preset-dot amber"></span> Borderline Student
+                    </button>
+                    <button type="button" class="btn-preset reset" id="btn-reset-form" title="Reset all input fields">
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- TWO-COLUMN WORKBENCH -->
+            <div class="predictor-grid">
+
+                <!-- LEFT: FORM INPUTS -->
+                <div class="glass-card form-card">
+                    <form id="prediction-form">
+                        <div class="form-group-section">
+                            <h3 class="form-section-title">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                                Academic Foundation
+                            </h3>
+                            <div class="input-grid">
+                                <div class="input-field">
+                                    <label for="input-cgpa">College CGPA (0.0 - 10.0)</label>
+                                    <div class="input-with-hint">
+                                        <input type="number" id="input-cgpa" name="CGPA" step="0.01" min="0" max="10" placeholder="e.g. 7.80" required>
+                                        <span class="input-tag">Avg: 7.74</span>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="input-ssc">SSC (10th) Marks % (0 - 100)</label>
+                                    <div class="input-with-hint">
+                                        <input type="number" id="input-ssc" name="SSC_Marks" step="0.1" min="0" max="100" placeholder="e.g. 75.0" required>
+                                        <span class="input-tag">Avg: 68.9%</span>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="input-hsc">HSC (12th) Marks % (0 - 100)</label>
+                                    <div class="input-with-hint">
+                                        <input type="number" id="input-hsc" name="HSC_Marks" step="0.1" min="0" max="100" placeholder="e.g. 78.0" required>
+                                        <span class="input-tag">Avg: 74.3%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-section">
+                            <h3 class="form-section-title">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                                Aptitude & Interpersonal Skills
+                            </h3>
+                            <div class="input-grid">
+                                <div class="input-field">
+                                    <label for="input-aptitude">Aptitude Test Score (0 - 100)</label>
+                                    <div class="input-with-hint">
+                                        <input type="number" id="input-aptitude" name="AptitudeTestScore" step="0.1" min="0" max="100" placeholder="e.g. 82.0" required>
+                                        <span class="input-tag">SHAP #1 Rank</span>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="input-soft-skills">Soft Skills Rating (1.0 - 5.0)</label>
+                                    <div class="input-with-hint">
+                                        <input type="number" id="input-soft-skills" name="SoftSkillsRating" step="0.1" min="1.0" max="5.0" placeholder="e.g. 4.2" required>
+                                        <span class="input-tag">Scale 1-5</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-section">
+                            <h3 class="form-section-title">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                                Practical Experience & Upskilling
+                            </h3>
+                            <div class="input-grid three-col">
+                                <div class="input-field">
+                                    <label for="input-projects">Projects Completed</label>
+                                    <input type="number" id="input-projects" name="Projects" min="0" max="20" placeholder="e.g. 2" required>
+                                </div>
+                                <div class="input-field">
+                                    <label for="input-certifications">Workshops / Certs</label>
+                                    <input type="number" id="input-certifications" name="Workshops/Certifications" min="0" max="20" placeholder="e.g. 1" required>
+                                </div>
+                                <div class="input-field">
+                                    <label for="input-internships">Internships</label>
+                                    <input type="number" id="input-internships" name="Internships" min="0" max="10" placeholder="e.g. 1" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-section">
+                            <h3 class="form-section-title">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                Activities & Institutional Training
+                            </h3>
+                            <div class="input-grid">
+                                <div class="input-field">
+                                    <label for="input-extra">Extracurricular Activities</label>
+                                    <select id="input-extra" name="ExtracurricularActivities" required>
+                                        <option value="Yes">Yes (Active)</option>
+                                        <option value="No" selected>No</option>
+                                    </select>
+                                </div>
+                                <div class="input-field">
+                                    <label for="input-training">Campus Placement Training</label>
+                                    <select id="input-training" name="PlacementTraining" required>
+                                        <option value="Yes">Yes (Enrolled)</option>
+                                        <option value="No" selected>No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VALIDATION ERROR ALERT -->
+                        <div class="alert-box error hidden" id="form-error-alert">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            <span id="form-error-msg">Validation error message goes here.</span>
+                        </div>
+
+                        <!-- STALE INPUTS WARNING -->
+                        <div class="stale-warning hidden" id="stale-warning">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            <span>Inputs modified — click "Run Placement Prediction" to refresh forecast and scenarios.</span>
+                        </div>
+
+                        <!-- SUBMIT BUTTON -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="btn-submit-predict">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Run Placement Prediction
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- RIGHT: RESULT CARD -->
+                <div class="glass-card result-card" id="result-container">
+                    
+                    <!-- INITIAL EMPTY STATE -->
+                    <div class="result-placeholder" id="result-placeholder">
+                        <div class="placeholder-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                        </div>
+                        <h3>Prediction Engine Ready</h3>
+                        <p>Fill out the 10 student features on the left or click one of the profile presets to see instant placement forecasting and risk analysis.</p>
+                    </div>
+
+                    <!-- ACTIVE RESULT DISPLAY -->
+                    <div class="result-content hidden" id="result-content">
+                        <div class="result-header">
+                            <span class="result-eyebrow">Forecast Outcome</span>
+                            <div class="prediction-badge" id="badge-prediction">Placed</div>
+                        </div>
+
+                        <!-- PROBABILITY GAUGE -->
+                        <div class="gauge-section">
+                            <div class="gauge-display">
+                                <span class="gauge-number" id="val-placement-prob">0.0%</span>
+                                <span class="gauge-label">Placement Probability</span>
+                            </div>
+                            <div class="probability-track">
+                                <div class="probability-fill" id="prob-fill-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- RISK STRATIFICATION CARD -->
+                        <div class="risk-card" id="risk-card-container">
+                            <div class="risk-header">
+                                <div class="risk-title-wrap">
+                                    <span class="risk-title">Placement Risk Category</span>
+                                    <span class="risk-badge" id="badge-risk-level">High Risk</span>
+                                </div>
+                                <span class="risk-score-pill" id="val-risk-score">Risk: 0.9095</span>
+                            </div>
+                            <p class="risk-desc" id="risk-explanation-text">
+                                High probability of non-placement. Immediate targeted skill and aptitude interventions recommended.
+                            </p>
+                        </div>
+
+                        <!-- METRICS BREAKDOWN -->
+                        <div class="breakdown-grid">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Non-Placement Prob:</span>
+                                <span class="breakdown-value" id="val-non-prob">0.0%</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Model Architecture:</span>
+                                <span class="breakdown-value">Tuned LogReg</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Decision Boundary:</span>
+                                <span class="breakdown-value">50.0% Cutoff</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Status Flag:</span>
+                                <span class="breakdown-value" id="val-status-flag">Class 0</span>
+                            </div>
+                        </div>
+
+                        <!-- ADVISORY / ESTIMATE DISCLAIMER -->
+                        <div class="estimate-disclaimer">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            <span><strong>Decision Support Advisory:</strong> Model forecasts and risk categories are statistical estimates based on historical student records, not absolute guarantees of recruitment outcomes.</span>
+                        </div>
+
+                        <!-- QUICK LINKS -->
+                        <div class="result-action-links">
+                            <a href="#what-if" class="action-link">
+                                <span>Explore What-If Scenarios</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                            <a href="#recommendations" class="action-link">
+                                <span>View Prescriptive Actions</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. WHAT-IF ANALYSIS SCENARIO LAB -->
+        <section id="what-if" class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">What-If Intervention Studio</h2>
+                    <p class="section-subtitle">Simulate real-time strategic actions to measure exact placement probability percentage-point gains ($\Delta$ pp) and risk transitions.</p>
+                </div>
+                <button type="button" class="btn btn-secondary" id="btn-recalc-whatif">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    Refresh Scenarios
+                </button>
+            </div>
+
+            <div class="whatif-container">
+                <!-- CHART -->
+                <div class="glass-card chart-card">
+                    <h3 class="card-title">Placement Probability Across Intervention Scenarios</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-whatif"></canvas>
+                    </div>
+                </div>
+
+                <!-- SCENARIO CARDS GRID -->
+                <div class="scenarios-grid" id="scenarios-cards-grid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. PRESCRIPTIVE CAREER RECOMMENDATIONS -->
+        <section id="recommendations" class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Prescriptive Career Recommendations</h2>
+                    <p class="section-subtitle">Actionable, prioritized interventions benchmarked against the historical profiles of placed college alumni.</p>
+                </div>
+                <button type="button" class="btn btn-secondary" id="btn-recalc-recs">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    Refresh Recommendations
+                </button>
+            </div>
+
+            <div class="estimate-disclaimer compact">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <span>Estimated probability boosts (+&Delta; pp) reflect simulated mathematical model responses to isolated skill enhancements, holding other background variables constant.</span>
+            </div>
+
+            <div class="recommendations-grid" id="recommendations-container">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- 5. MODEL BENCHMARKS & EVALUATION -->
+        <section id="models" class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">10-Model Comparative Evaluation</h2>
+                    <p class="section-subtitle">Comprehensive benchmarking of candidate machine learning algorithms evaluated during project experimentation.</p>
+                </div>
+            </div>
+
+            <div class="glass-card table-card">
+                <div class="table-responsive">
+                    <table class="data-table" id="models-table">
+                        <thead>
+                            <tr>
+                                <th>Algorithm / Model</th>
+                                <th>Accuracy</th>
+                                <th>Precision (Placed)</th>
+                                <th>Recall (Placed)</th>
+                                <th>F1-Score</th>
+                                <th>ROC-AUC</th>
+                                <th>PR-AUC</th>
+                                <th>Selection Note</th>
+                            </tr>
+                        </thead>
+                        <tbody id="models-table-body">
+                            <!-- Populated from reports/all_models_validation.csv -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-split-grid">
+                <div class="glass-card chart-card">
+                    <h3 class="card-title">Accuracy vs F1-Score vs ROC-AUC Across Models</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-models-comparison"></canvas>
+                    </div>
+                </div>
+                <div class="glass-card chart-card">
+                    <h3 class="card-title">Cross-Validation Stability (5-Fold CV)</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-cv-stability"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. SHAP EXPLAINABILITY & RISK ANALYSIS -->
+        <section id="shap-risk" class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Feature Importance & Cohort Risk Analytics</h2>
+                    <p class="section-subtitle">Model interpretability through SHAP values, feature benchmark comparisons, and placement risk distributions.</p>
+                </div>
+            </div>
+
+            <div class="chart-split-grid">
+                <!-- SHAP CHART -->
+                <div class="glass-card chart-card">
+                    <h3 class="card-title">Global Feature Importance (Mean |SHAP|)</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-shap"></canvas>
+                    </div>
+                </div>
+
+                <!-- RISK PIE CHART -->
+                <div class="glass-card chart-card">
+                    <h3 class="card-title">Test Cohort Risk Stratification (1,984 Students)</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-risk-pie"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BENCHMARK COMPARISON RADAR / BAR -->
+            <div class="glass-card chart-card full-width">
+                <div class="benchmarks-header">
+                    <div>
+                        <h3 class="card-title">Placed vs Non-Placed Student Feature Benchmarks</h3>
+                        <p class="section-subtitle">Direct comparison of feature averages across 6,353 training student profiles (2,611 Placed vs 3,742 Not Placed). Hover over bars to inspect raw values.</p>
+                    </div>
+                </div>
+
+                <!-- 4 KPI BENCHMARK SUMMARY CARDS -->
+                <div class="benchmark-kpi-grid">
+                    <div class="kpi-card">
+                        <span class="kpi-title">Aptitude Test Score</span>
+                        <div class="kpi-vals">
+                            <span class="kpi-placed">Placed: <strong>84.42</strong></span>
+                            <span class="kpi-notplaced">Not Placed: <strong>75.83</strong></span>
+                        </div>
+                        <span class="kpi-delta green">+8.59 pts higher</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-title">College CGPA</span>
+                        <div class="kpi-vals">
+                            <span class="kpi-placed">Placed: <strong>8.01</strong></span>
+                            <span class="kpi-notplaced">Not Placed: <strong>7.47</strong></span>
+                        </div>
+                        <span class="kpi-delta green">+0.54 pts higher</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-title">Projects Completed</span>
+                        <div class="kpi-vals">
+                            <span class="kpi-placed">Placed: <strong>2.50</strong></span>
+                            <span class="kpi-notplaced">Not Placed: <strong>1.67</strong></span>
+                        </div>
+                        <span class="kpi-delta green">+50% more projects</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-title">HSC / SSC Foundation</span>
+                        <div class="kpi-vals">
+                            <span class="kpi-placed">HSC: <strong>79.75%</strong></span>
+                            <span class="kpi-notplaced">Not Placed: <strong>70.56%</strong></span>
+                        </div>
+                        <span class="kpi-delta green">+9.19% higher</span>
+                    </div>
+                </div>
+
+                <div class="chart-wrapper">
+                    <canvas id="chart-benchmarks"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. EDA REPORTS GALLERY -->
+        <section id="eda-gallery" class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Exploratory Data Analysis Gallery</h2>
+                    <p class="section-subtitle">Visualizations generated during Phase 1 Data Exploration illustrating distributions and correlations.</p>
+                </div>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-card" onclick="openLightbox('/reports/figures/01_placement_distribution.png', 'Placement Status Class Distribution')">
+                    <div class="gallery-img-wrap">
+                        <img src="/reports/figures/01_placement_distribution.png" alt="Placement Distribution">
+                    </div>
+                    <div class="gallery-info">
+                        <h4>01. Placement Class Distribution</h4>
+                        <p>Distribution of Placed (2,611) vs Not Placed (3,742) students.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-card" onclick="openLightbox('/reports/figures/02_academic_and_aptitude.png', 'Academic & Aptitude Relationships')">
+                    <div class="gallery-img-wrap">
+                        <img src="/reports/figures/02_academic_and_aptitude.png" alt="Academic and Aptitude">
+                    </div>
+                    <div class="gallery-info">
+                        <h4>02. Academic & Aptitude Metrics</h4>
+                        <p>Relationship between CGPA, Aptitude, SSC, and HSC scores.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-card" onclick="openLightbox('/reports/figures/03_experience_and_projects.png', 'Experience and Projects')">
+                    <div class="gallery-img-wrap">
+                        <img src="/reports/figures/03_experience_and_projects.png" alt="Experience and Projects">
+                    </div>
+                    <div class="gallery-info">
+                        <h4>03. Experience & Projects Impact</h4>
+                        <p>Impact of project count and internships on placement odds.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-card" onclick="openLightbox('/reports/figures/04_training_and_extracurriculars.png', 'Training & Extracurriculars')">
+                    <div class="gallery-img-wrap">
+                        <img src="/reports/figures/04_training_and_extracurriculars.png" alt="Training and Extracurriculars">
+                    </div>
+                    <div class="gallery-info">
+                        <h4>04. Institutional Training & Activities</h4>
+                        <p>Placement rates partitioned by campus training participation.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-card" onclick="openLightbox('/reports/figures/05_correlation_heatmap.png', 'Feature Correlation Heatmap')">
+                    <div class="gallery-img-wrap">
+                        <img src="/reports/figures/05_correlation_heatmap.png" alt="Correlation Heatmap">
+                    </div>
+                    <div class="gallery-info">
+                        <h4>05. Correlation Matrix Heatmap</h4>
+                        <p>Pairwise Pearson correlations between all 10 features.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-card" onclick="openLightbox('/reports/ten_model_comparison.png', '10-Model Validation Comparison')">
+                    <div class="gallery-img-wrap">
+                        <img src="/reports/ten_model_comparison.png" alt="Ten Model Comparison">
+                    </div>
+                    <div class="gallery-info">
+                        <h4>06. Ten-Model Benchmark Plot</h4>
+                        <p>Visual performance comparison across all 10 candidate models.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- IMAGE LIGHTBOX MODAL -->
+    <div class="modal hidden" id="image-modal" onclick="closeLightbox()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeLightbox()">&times;</button>
+            <h3 id="modal-caption" class="modal-caption">Figure Preview</h3>
+            <img id="modal-image" src="" alt="Full Preview">
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-info">
+                <h4>Smart Placement Prediction & Career Analytics System</h4>
+                <p>College Data Science Capstone Project • Semester 5</p>
+            </div>
+            <div class="footer-badges">
+                <span class="tech-badge">Python 3.13</span>
+                <span class="tech-badge">Flask API</span>
+                <span class="tech-badge">Scikit-Learn 1.6.1</span>
+                <span class="tech-badge">SHAP Explainability</span>
+                <span class="tech-badge">Chart.js 4</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

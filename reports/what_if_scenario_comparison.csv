@@ -1,0 +1,5 @@
+Scenario,PlacementProbability,NonPlacementProbability,RiskLevel,Change_vs_Baseline_pp
+Baseline,0.0905,0.9095,High,0.0
+Aptitude +10,0.1394,0.8606,High,4.89
+Projects +1,0.1166,0.8834,High,2.61
+Soft Skills +0.5,0.1149,0.8851,High,2.4400000000000004

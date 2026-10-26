@@ -1,0 +1,13 @@
+Feature,Mean_Absolute_SHAP
+numeric__AptitudeTestScore,0.3203101228625868
+numeric__HSC_Marks,0.258456630816606
+numeric__SSC_Marks,0.20868861365139396
+numeric__Projects,0.20601598742777236
+numeric__SoftSkillsRating,0.19084474039928045
+numeric__CGPA,0.16113851594741277
+numeric__Workshops/Certifications,0.12311111872147562
+categorical__ExtracurricularActivities_No,0.09037870603611468
+categorical__ExtracurricularActivities_Yes,0.09037832140767468
+categorical__PlacementTraining_No,0.06989214994724827
+categorical__PlacementTraining_Yes,0.06989184882366713
+numeric__Internships,0.03221948356860063

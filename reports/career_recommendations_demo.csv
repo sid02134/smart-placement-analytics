@@ -1,0 +1,6 @@
+Feature,Recommendation,Suggested_Action,Current_Value,Simulated_Value,Placement_Probability_Change_pp,Simulated_Risk
+AptitudeTestScore,Aptitude preparation,"Practice quantitative aptitude, logical reasoning, and timed mock tests regularly.",69.0,79.0,4.89,High
+Projects,Practical project experience,"Complete a well-documented project and be prepared to explain its design, implementation, and results.",1.0,2.0,2.61,High
+SoftSkillsRating,Communication and interview skills,"Practice mock interviews, structured answers, presentations, and clear technical explanations.",4.0,4.5,2.44,High
+Workshops/Certifications,Relevant workshops or certifications,Consider a relevant course or certification that supports your target role and demonstrates practical skills.,0.0,1.0,1.2,High
+Internships,Relevant internship experience,"Explore internships, supervised projects, or practical experience aligned with your career goals.",1.0,2.0,0.59,High
