@@ -18,7 +18,7 @@
     <!-- TOP NAVIGATION BAR -->
     <header class="navbar">
         <div class="nav-container">
-            <div class="nav-brand">
+            <div class="nav-brand" id="brand-home-btn" title="Smart Placement Analytics Home">
                 <div class="brand-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
@@ -31,40 +31,80 @@
                 </div>
             </div>
 
-            <nav class="nav-links">
-                <a href="#overview" class="nav-item active">Overview</a>
-                <a href="#predictor" class="nav-item">Predictor</a>
-                <a href="#what-if" class="nav-item">What-If Lab</a>
-                <a href="#recommendations" class="nav-item">Career Guidance</a>
-                <a href="#models" class="nav-item">Model Benchmarks</a>
-                <a href="#shap-risk" class="nav-item">SHAP & Risk</a>
-                <a href="#eda-gallery" class="nav-item">EDA Gallery</a>
+            <!-- Hamburger Button for Mobile -->
+            <button type="button" class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- 7 Top Navigation Items -->
+            <nav class="nav-links" id="main-nav">
+                <button type="button" class="nav-item active" data-section="overview">Overview</button>
+                <button type="button" class="nav-item" data-section="predictor">Predictor</button>
+                <button type="button" class="nav-item" data-section="what-if">What-If Lab</button>
+                <button type="button" class="nav-item" data-section="recommendations">Career Guidance</button>
+                <button type="button" class="nav-item" data-section="my-progress">My Progress</button>
+                <button type="button" class="nav-item" data-section="resume-analyzer">Resume Analyzer</button>
             </nav>
 
-            <div class="nav-status">
+            <!-- Right-Hand Auth Status / Trigger -->
+            <div class="nav-actions">
                 <div class="status-indicator">
                     <span class="pulse-dot"></span>
                     <span class="status-text" id="api-status-text">Model Active (LogReg)</span>
+                </div>
+
+                <!-- Unauthenticated Button -->
+                <button type="button" class="btn btn-auth-nav" id="nav-btn-auth">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>Login / Sign Up</span>
+                </button>
+
+                <!-- Authenticated User Dropdown Indicator -->
+                <div class="nav-user-profile hidden" id="nav-user-profile">
+                    <div class="user-avatar" id="nav-avatar-initial">S</div>
+                    <div class="user-details">
+                        <span class="user-name" id="nav-user-name">Student</span>
+                        <span class="user-role" id="nav-user-role">Student</span>
+                    </div>
+                    <button type="button" class="btn-logout" id="nav-btn-logout" title="Sign out of account">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        Logout
+                    </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- MAIN CONTENT CONTAINER -->
+    <!-- MAIN CONTENT CONTAINER WITH DYNAMIC SECTION SWITCHING -->
     <main class="main-content">
 
-        <!-- 1. HERO / OVERVIEW SECTION -->
-        <section id="overview" class="section hero-section">
+        <!-- ========================================================= -->
+        <!-- 1. OVERVIEW SECTION -->
+        <!-- ========================================================= -->
+        <section id="overview" class="section active">
             <div class="hero-header">
                 <div class="hero-pill">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                    <span>Machine Learning Intelligence & Decision Support</span>
+                    <span>Machine Learning Intelligence & Career Decision Support</span>
                 </div>
                 <h1 class="hero-title">Smart Placement Prediction & <span class="gradient-text">Career Analytics</span></h1>
                 <p class="hero-desc">
                     An advanced predictive and prescriptive decision support system built on historical student performance data. 
                     Accurately predicts placement outcomes, stratifies non-placement risk, calculates dynamic what-if improvements, and delivers personalized career interventions.
                 </p>
+                <div class="hero-quick-actions">
+                    <button type="button" class="btn btn-primary" onclick="switchSection('predictor')">
+                        Launch Predictor
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="switchSection('resume-analyzer')">
+                        Analyze Resume
+                    </button>
+                    <button type="button" class="btn btn-outline" onclick="switchSection('my-progress')">
+                        Track My Progress
+                    </button>
+                </div>
             </div>
 
             <!-- KEY STATS CARDS -->
@@ -118,7 +158,7 @@
             <div class="glass-card dataset-summary-card">
                 <div class="dataset-summary-header">
                     <div>
-                        <h3 class="dataset-card-title">Dataset Partitioning & Historical Placement Distribution</h3>
+                        <h3 class="dataset-card-title">Dataset Partitioning &amp; Historical Placement Distribution</h3>
                         <p class="dataset-card-subtitle">Complete data breakdown across 9,928 total records partitioned for model training, tuning, and out-of-sample risk evaluation.</p>
                     </div>
                     <div class="quality-badge">
@@ -172,9 +212,80 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 4 KPI BENCHMARK SUMMARY CARDS (Placed vs Non-Placed Alumni) -->
+            <div class="benchmark-kpi-grid">
+                <div class="kpi-card">
+                    <span class="kpi-title">Aptitude Test Score</span>
+                    <div class="kpi-vals">
+                        <span class="kpi-placed">Placed: <strong>84.42</strong></span>
+                        <span class="kpi-notplaced">Not Placed: <strong>75.83</strong></span>
+                    </div>
+                    <span class="kpi-delta green">+8.59 pts higher</span>
+                </div>
+
+                <div class="kpi-card">
+                    <span class="kpi-title">College CGPA</span>
+                    <div class="kpi-vals">
+                        <span class="kpi-placed">Placed: <strong>8.01</strong></span>
+                        <span class="kpi-notplaced">Not Placed: <strong>7.47</strong></span>
+                    </div>
+                    <span class="kpi-delta green">+0.54 pts higher</span>
+                </div>
+
+                <div class="kpi-card">
+                    <span class="kpi-title">Projects Completed</span>
+                    <div class="kpi-vals">
+                        <span class="kpi-placed">Placed: <strong>2.50</strong></span>
+                        <span class="kpi-notplaced">Not Placed: <strong>1.67</strong></span>
+                    </div>
+                    <span class="kpi-delta green">+50% more projects</span>
+                </div>
+
+                <div class="kpi-card">
+                    <span class="kpi-title">HSC / SSC Foundation</span>
+                    <div class="kpi-vals">
+                        <span class="kpi-placed">HSC: <strong>79.75%</strong></span>
+                        <span class="kpi-notplaced">Not Placed: <strong>70.56%</strong></span>
+                    </div>
+                    <span class="kpi-delta green">+9.19% higher</span>
+                </div>
+            </div>
+
+            <!-- EXPLORATION CARDS (MODEL BENCHMARKS, SHAP & EDA) -->
+            <div class="overview-analytics-preview">
+                <div class="glass-card analytics-box-card">
+                    <div class="box-icon purple">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+                    </div>
+                    <h3>10-Model Benchmarking</h3>
+                    <p>Comparative empirical results across Logistic Regression, Random Forest, XGBoost, LightGBM, SVM, and Naive Bayes.</p>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="showSecondaryView('models')">Inspect Model Leaderboard &rarr;</button>
+                </div>
+
+                <div class="glass-card analytics-box-card">
+                    <div class="box-icon cyan">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m14 10-4 4"></path><path d="m10 10 4 4"></path></svg>
+                    </div>
+                    <h3>SHAP Interpretability & Risk</h3>
+                    <p>Global feature importance values identifying Aptitude, CGPA, and Projects as top predictive drivers.</p>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="showSecondaryView('shap-risk')">View SHAP Explanations &rarr;</button>
+                </div>
+
+                <div class="glass-card analytics-box-card">
+                    <div class="box-icon emerald">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    </div>
+                    <h3>Exploratory Data Analysis</h3>
+                    <p>High-resolution correlation heatmaps, feature distribution figures, and academic partitioning charts.</p>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="showSecondaryView('eda-gallery')">Open EDA Visual Gallery &rarr;</button>
+                </div>
+            </div>
         </section>
 
-        <!-- 2. INTERACTIVE PREDICTOR & RESULT LAB -->
+        <!-- ========================================================= -->
+        <!-- 2. PREDICTOR SECTION -->
+        <!-- ========================================================= -->
         <section id="predictor" class="section">
             <div class="section-header">
                 <div class="section-title-wrap">
@@ -321,6 +432,9 @@
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                 Run Placement Prediction
                             </button>
+                            <button type="button" class="btn btn-secondary hidden" id="btn-save-to-profile" title="Save this configuration to your student account">
+                                Save to My Profile
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -397,26 +511,28 @@
 
                         <!-- QUICK LINKS -->
                         <div class="result-action-links">
-                            <a href="#what-if" class="action-link">
+                            <button type="button" class="action-link" onclick="switchSection('what-if')">
                                 <span>Explore What-If Scenarios</span>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                            </a>
-                            <a href="#recommendations" class="action-link">
+                            </button>
+                            <button type="button" class="action-link" onclick="switchSection('recommendations')">
                                 <span>View Prescriptive Actions</span>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- ========================================================= -->
         <!-- 3. WHAT-IF ANALYSIS SCENARIO LAB -->
+        <!-- ========================================================= -->
         <section id="what-if" class="section">
             <div class="section-header">
                 <div>
                     <h2 class="section-title">What-If Intervention Studio</h2>
-                    <p class="section-subtitle">Simulate real-time strategic actions to measure exact placement probability percentage-point gains ($\Delta$ pp) and risk transitions.</p>
+                    <p class="section-subtitle">Simulate real-time strategic actions to measure exact placement probability percentage-point gains (&Delta; pp) and risk transitions.</p>
                 </div>
                 <button type="button" class="btn btn-secondary" id="btn-recalc-whatif">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
@@ -440,36 +556,381 @@
             </div>
         </section>
 
-        <!-- 4. PRESCRIPTIVE CAREER RECOMMENDATIONS -->
+        <!-- ========================================================= -->
+        <!-- 4. CAREER GUIDANCE (RECOMMENDATIONS, ROLES, ROADMAP) -->
+        <!-- ========================================================= -->
         <section id="recommendations" class="section">
             <div class="section-header">
                 <div>
-                    <h2 class="section-title">Prescriptive Career Recommendations</h2>
-                    <p class="section-subtitle">Actionable, prioritized interventions benchmarked against the historical profiles of placed college alumni.</p>
+                    <h2 class="section-title">Comprehensive Career Guidance</h2>
+                    <p class="section-subtitle">Actionable prescriptive recommendations, transparent job-role alignment, and an interactive learning milestone roadmap.</p>
                 </div>
-                <button type="button" class="btn btn-secondary" id="btn-recalc-recs">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-                    Refresh Recommendations
-                </button>
+                <div class="subtab-pills" id="guidance-subtabs">
+                    <button type="button" class="subtab-btn active" data-subtab="tab-prescriptions">Prescriptive Actions</button>
+                    <button type="button" class="subtab-btn" data-subtab="tab-roles">Job Role Recommendations</button>
+                    <button type="button" class="subtab-btn" data-subtab="tab-roadmap">Personalized Roadmap</button>
+                </div>
             </div>
 
-            <div class="estimate-disclaimer compact">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                <span>Estimated probability boosts (+&Delta; pp) reflect simulated mathematical model responses to isolated skill enhancements, holding other background variables constant.</span>
+            <!-- SUBTAB 1: Prescriptive Alumni Benchmarked Recommendations -->
+            <div class="guidance-tab-pane active" id="tab-prescriptions">
+                <div class="subtab-action-bar">
+                    <div class="estimate-disclaimer compact">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        <span>Estimated probability boosts (+&Delta; pp) reflect simulated mathematical model responses to isolated skill enhancements, holding other background variables constant.</span>
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-sm" id="btn-recalc-recs">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                        Refresh Recommendations
+                    </button>
+                </div>
+                <div class="recommendations-grid" id="recommendations-container">
+                    <!-- Populated dynamically via JS -->
+                </div>
             </div>
 
-            <div class="recommendations-grid" id="recommendations-container">
-                <!-- Populated dynamically via JS -->
+            <!-- SUBTAB 2: Job Role Recommendations -->
+            <div class="guidance-tab-pane hidden" id="tab-roles">
+                <div class="roles-intro-bar">
+                    <p class="roles-disclaimer">
+                        Evaluates student profile and resume competencies against 5 key tech career profiles. Match percentages are transparently computed from required skills, recommended technologies, and academic thresholds.
+                    </p>
+                </div>
+                <div class="job-roles-grid" id="job-roles-container">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- SUBTAB 3: Personalized Career Roadmap -->
+            <div class="guidance-tab-pane hidden" id="tab-roadmap">
+                <div class="roadmap-header-card glass-card">
+                    <div class="roadmap-goal-picker">
+                        <label for="roadmap-goal-select">Active Career Goal:</label>
+                        <select id="roadmap-goal-select" class="goal-dropdown">
+                            <option value="Data Analyst">Data Analyst</option>
+                            <option value="Data Scientist">Data Scientist</option>
+                            <option value="Software Developer" selected>Software Developer</option>
+                            <option value="Business Analyst">Business Analyst</option>
+                            <option value="QA Engineer">QA Engineer</option>
+                        </select>
+                        <button type="button" class="btn btn-secondary btn-sm" id="btn-update-career-goal">Update Goal</button>
+                    </div>
+                    <div class="roadmap-progress-wrap">
+                        <div class="roadmap-progress-info">
+                            <span>Milestone Completion Progress</span>
+                            <strong id="val-roadmap-progress-pct">0%</strong>
+                        </div>
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill" id="roadmap-progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="milestones-checklist" id="roadmap-milestones-container">
+                    <!-- Populated dynamically via JS -->
+                </div>
             </div>
         </section>
 
-        <!-- 5. MODEL BENCHMARKS & EVALUATION -->
-        <section id="models" class="section">
+        <!-- ========================================================= -->
+        <!-- 5. MY PROGRESS & STUDENT DASHBOARD -->
+        <!-- ========================================================= -->
+        <section id="my-progress" class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Student Profile & Progress Tracker</h2>
+                    <p class="section-subtitle">Chronological assessment history, skill growth velocity, and earned achievement badges.</p>
+                </div>
+                <div class="header-actions" id="progress-auth-actions">
+                    <!-- Populated via JS depending on login status -->
+                </div>
+            </div>
+
+            <!-- GUEST INVITATION STATE (When not logged in) -->
+            <div class="glass-card guest-callout-card" id="progress-guest-callout">
+                <div class="callout-icon">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <div class="callout-content">
+                    <h3>Sign In to Save Your Placement Journey</h3>
+                    <p>Create a student account or log in to store your personal academic records, track CGPA and Aptitude changes over time, unlock gamification badges, and maintain your private resume analysis.</p>
+                </div>
+                <div class="callout-actions">
+                    <button type="button" class="btn btn-primary" onclick="openAuthModal('login')">Sign In</button>
+                    <button type="button" class="btn btn-outline" onclick="openAuthModal('register')">Register Student Account</button>
+                </div>
+            </div>
+
+            <!-- AUTHENTICATED STUDENT DASHBOARD -->
+            <div class="student-dashboard hidden" id="student-dashboard-content">
+                
+                <!-- PROFILE BANNER -->
+                <div class="glass-card student-profile-card">
+                    <div class="student-avatar-lg" id="dash-avatar-lg">S</div>
+                    <div class="student-banner-info">
+                        <div class="banner-top">
+                            <h3 class="student-banner-name" id="dash-student-name">Student Name</h3>
+                            <span class="role-badge" id="dash-target-role">Software Developer</span>
+                        </div>
+                        <p class="student-banner-email" id="dash-student-email">email@college.edu</p>
+                        <div class="student-quick-metrics">
+                            <div class="metric-pill"><span>CGPA:</span> <strong id="dash-metric-cgpa">--</strong></div>
+                            <div class="metric-pill"><span>Aptitude:</span> <strong id="dash-metric-aptitude">--</strong></div>
+                            <div class="metric-pill"><span>Projects:</span> <strong id="dash-metric-projects">--</strong></div>
+                            <div class="metric-pill"><span>Placement Prob:</span> <strong id="dash-metric-prob">--%</strong></div>
+                            <div class="metric-pill"><span>Risk:</span> <strong id="dash-metric-risk">--</strong></div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-sm" id="btn-edit-student-profile">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                        Update Profile
+                    </button>
+                </div>
+
+                <!-- PROGRESS TIMELINE CHART & METRICS -->
+                <div class="progress-charts-grid">
+                    <div class="glass-card chart-card">
+                        <div class="chart-header-flex">
+                            <h3 class="card-title">Placement Probability & Aptitude Timeline</h3>
+                            <button type="button" class="btn btn-xs btn-outline" id="btn-record-new-snapshot">Take Assessment Snapshot</button>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="chart-student-progress"></canvas>
+                        </div>
+                        <p class="chart-disclaimer-note">
+                            <strong>Note:</strong> Changes in predicted probability reflect simulated mathematical responses to updated inputs and do not guarantee actual placement recruitment offers.
+                        </p>
+                    </div>
+
+                    <!-- INSIGHTS: IMPROVEMENTS & FOCUS AREAS -->
+                    <div class="glass-card insights-card">
+                        <h3 class="card-title">Progress Diagnostics</h3>
+                        
+                        <div class="diagnostic-group">
+                            <h4 class="diagnostic-title green">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Verified Improvements
+                            </h4>
+                            <ul class="diagnostic-list" id="list-progress-improvements">
+                                <li class="text-muted">Record multiple snapshots to measure verified velocity.</li>
+                            </ul>
+                        </div>
+
+                        <div class="diagnostic-group">
+                            <h4 class="diagnostic-title amber">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                Attention & Action Priorities
+                            </h4>
+                            <ul class="diagnostic-list" id="list-progress-attention">
+                                <li class="text-muted">Target Aptitude 80+ and complete at least 2 portfolio projects.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GAMIFICATION & ACHIEVEMENT BADGES -->
+                <div class="glass-card badges-section-card">
+                    <div class="badges-header">
+                        <div>
+                            <h3 class="card-title">Student Achievement Badges</h3>
+                            <p class="section-subtitle">Earn recognition as you build practical projects, advance your aptitude tests, and elevate your placement readiness.</p>
+                        </div>
+                        <div class="badge-count-pill" id="badge-count-pill">
+                            Earned: <strong>0 / 7</strong>
+                        </div>
+                    </div>
+
+                    <div class="badges-grid" id="badges-container">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- RECENT ASSESSMENT SNAPSHOTS TABLE -->
+                <div class="glass-card table-card">
+                    <h3 class="card-title">Saved Assessment Timeline</h3>
+                    <div class="table-responsive">
+                        <table class="data-table" id="progress-history-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Label</th>
+                                    <th>CGPA</th>
+                                    <th>Aptitude</th>
+                                    <th>Projects</th>
+                                    <th>Placement Prob</th>
+                                    <th>Risk Level</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="progress-history-tbody">
+                                <!-- Populated dynamically via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 6. RESUME ANALYZER SECTION -->
+        <!-- ========================================================= -->
+        <section id="resume-analyzer" class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Resume & Skill Gap Analyzer</h2>
+                    <p class="section-subtitle">Upload your PDF resume to extract technical competencies, benchmark against target roles, and evaluate alignment with job descriptions.</p>
+                </div>
+            </div>
+
+            <div class="resume-workbench-grid">
+                
+                <!-- LEFT: UPLOAD & CONFIGURATION CARD -->
+                <div class="glass-card resume-upload-card">
+                    <h3 class="card-title">Resume Submission</h3>
+                    <p class="card-instruction">Upload a standard PDF resume (up to 5MB). Files are securely isolated and never executed or shared publicly.</p>
+
+                    <form id="resume-upload-form" enctype="multipart/form-data">
+                        <!-- DRAG & DROP ZONE -->
+                        <div class="file-dropzone" id="resume-dropzone">
+                            <input type="file" id="resume-file-input" name="resume" accept=".pdf" class="file-input-hidden" required>
+                            <div class="dropzone-inner" id="dropzone-text">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="12" y2="12"></line><line x1="15" y1="15" x2="12" y2="12"></line></svg>
+                                <span class="dropzone-prompt"><strong>Click to browse</strong> or drag & drop your resume PDF</span>
+                                <span class="dropzone-sub">Supported format: PDF only (Max 5MB)</span>
+                            </div>
+                            <div class="file-selected-info hidden" id="file-selected-info">
+                                <span class="selected-filename" id="selected-filename">resume.pdf</span>
+                                <button type="button" class="btn-clear-file" id="btn-clear-file">&times;</button>
+                            </div>
+                        </div>
+
+                        <!-- TARGET ROLE SELECTOR -->
+                        <div class="input-field">
+                            <label for="resume-target-role">Target Job Role</label>
+                            <select id="resume-target-role" name="target_role" required>
+                                <option value="Software Developer" selected>Software Developer</option>
+                                <option value="Data Scientist">Data Scientist</option>
+                                <option value="Data Analyst">Data Analyst</option>
+                                <option value="Business Analyst">Business Analyst</option>
+                                <option value="QA Engineer">QA Engineer</option>
+                            </select>
+                        </div>
+
+                        <!-- OPTIONAL JOB DESCRIPTION TEXTAREA -->
+                        <div class="input-field">
+                            <label for="resume-job-description">Custom Job Description (Optional)</label>
+                            <textarea id="resume-job-description" name="job_description" rows="4" placeholder="Paste specific requirements from a job posting to compare skill overlap and discover missing keywords..."></textarea>
+                        </div>
+
+                        <!-- SUBMIT BUTTON -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="btn-submit-resume">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Parse & Benchmark Resume
+                            </button>
+                        </div>
+
+                        <!-- ERROR ALERT -->
+                        <div class="alert-box error hidden" id="resume-error-alert">
+                            <span id="resume-error-msg">Upload error</span>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- RIGHT: ANALYSIS REPORT CARD -->
+                <div class="glass-card resume-result-card" id="resume-result-container">
+                    
+                    <!-- EMPTY PLACEHOLDER -->
+                    <div class="result-placeholder" id="resume-placeholder">
+                        <div class="placeholder-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        </div>
+                        <h3>No Resume Analyzed Yet</h3>
+                        <p>Upload your PDF resume on the left to extract detected skills, calculate role alignment score, and review personalized suggestions.</p>
+                    </div>
+
+                    <!-- ACTIVE ANALYSIS REPORT -->
+                    <div class="resume-report-content hidden" id="resume-report-content">
+                        <div class="report-header">
+                            <div>
+                                <span class="result-eyebrow">Analysis Report</span>
+                                <h3 class="report-title" id="report-target-role">Software Developer Alignment</h3>
+                            </div>
+                            <div class="match-score-badge" id="report-match-badge">
+                                <span class="score-num" id="report-match-score">0%</span>
+                                <span class="score-label">Role Match</span>
+                            </div>
+                        </div>
+
+                        <!-- DETECTED SKILLS -->
+                        <div class="report-section">
+                            <h4 class="report-section-title">Detected Technical Skills (<span id="count-detected-skills">0</span>)</h4>
+                            <div class="tags-cloud" id="tags-detected-skills">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- MATCHED VS MISSING SKILLS -->
+                        <div class="report-split-grid">
+                            <div class="report-box matched">
+                                <h4 class="report-box-title green">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Matched Competencies
+                                </h4>
+                                <div class="tags-cloud compact" id="tags-matched-skills">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+
+                            <div class="report-box missing">
+                                <h4 class="report-box-title amber">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                    Potential Skill Gaps
+                                </h4>
+                                <div class="tags-cloud compact" id="tags-missing-skills">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- IMPROVEMENT SUGGESTIONS -->
+                        <div class="report-section">
+                            <h4 class="report-section-title">Actionable Resume Suggestions</h4>
+                            <ul class="suggestions-list" id="report-suggestions-list">
+                                <!-- Populated dynamically -->
+                            </ul>
+                        </div>
+
+                        <!-- ATS & ESTIMATE DISCLAIMER -->
+                        <div class="estimate-disclaimer">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            <span><strong>Transparent Evaluation Note:</strong> This keyword analysis is an educational estimate and may miss context, phrasing, or unique synonyms. It does not replicate proprietary commercial ATS ranking engines.</span>
+                        </div>
+
+                        <!-- DELETE RECORD BUTTON -->
+                        <div class="report-footer-actions">
+                            <button type="button" class="btn btn-sm btn-danger-outline" id="btn-delete-resume">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                Delete Resume & Analysis
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SECONDARY SECTIONS (PRESERVED FOR INTEGRITY & BENCHMARKING)-->
+        <!-- ========================================================= -->
+
+        <!-- 7. MODEL BENCHMARKS & EVALUATION -->
+        <section id="models" class="section secondary-section hidden">
             <div class="section-header">
                 <div>
                     <h2 class="section-title">10-Model Comparative Evaluation</h2>
                     <p class="section-subtitle">Comprehensive benchmarking of candidate machine learning algorithms evaluated during project experimentation.</p>
                 </div>
+                <button type="button" class="btn btn-sm btn-secondary" onclick="switchSection('overview')">&larr; Back to Overview</button>
             </div>
 
             <div class="glass-card table-card">
@@ -510,13 +971,14 @@
             </div>
         </section>
 
-        <!-- 6. SHAP EXPLAINABILITY & RISK ANALYSIS -->
-        <section id="shap-risk" class="section">
+        <!-- 8. SHAP EXPLAINABILITY & RISK ANALYSIS -->
+        <section id="shap-risk" class="section secondary-section hidden">
             <div class="section-header">
                 <div>
                     <h2 class="section-title">Feature Importance & Cohort Risk Analytics</h2>
                     <p class="section-subtitle">Model interpretability through SHAP values, feature benchmark comparisons, and placement risk distributions.</p>
                 </div>
+                <button type="button" class="btn btn-sm btn-secondary" onclick="switchSection('overview')">&larr; Back to Overview</button>
             </div>
 
             <div class="chart-split-grid">
@@ -545,59 +1007,20 @@
                         <p class="section-subtitle">Direct comparison of feature averages across 6,353 training student profiles (2,611 Placed vs 3,742 Not Placed). Hover over bars to inspect raw values.</p>
                     </div>
                 </div>
-
-                <!-- 4 KPI BENCHMARK SUMMARY CARDS -->
-                <div class="benchmark-kpi-grid">
-                    <div class="kpi-card">
-                        <span class="kpi-title">Aptitude Test Score</span>
-                        <div class="kpi-vals">
-                            <span class="kpi-placed">Placed: <strong>84.42</strong></span>
-                            <span class="kpi-notplaced">Not Placed: <strong>75.83</strong></span>
-                        </div>
-                        <span class="kpi-delta green">+8.59 pts higher</span>
-                    </div>
-
-                    <div class="kpi-card">
-                        <span class="kpi-title">College CGPA</span>
-                        <div class="kpi-vals">
-                            <span class="kpi-placed">Placed: <strong>8.01</strong></span>
-                            <span class="kpi-notplaced">Not Placed: <strong>7.47</strong></span>
-                        </div>
-                        <span class="kpi-delta green">+0.54 pts higher</span>
-                    </div>
-
-                    <div class="kpi-card">
-                        <span class="kpi-title">Projects Completed</span>
-                        <div class="kpi-vals">
-                            <span class="kpi-placed">Placed: <strong>2.50</strong></span>
-                            <span class="kpi-notplaced">Not Placed: <strong>1.67</strong></span>
-                        </div>
-                        <span class="kpi-delta green">+50% more projects</span>
-                    </div>
-
-                    <div class="kpi-card">
-                        <span class="kpi-title">HSC / SSC Foundation</span>
-                        <div class="kpi-vals">
-                            <span class="kpi-placed">HSC: <strong>79.75%</strong></span>
-                            <span class="kpi-notplaced">Not Placed: <strong>70.56%</strong></span>
-                        </div>
-                        <span class="kpi-delta green">+9.19% higher</span>
-                    </div>
-                </div>
-
                 <div class="chart-wrapper">
                     <canvas id="chart-benchmarks"></canvas>
                 </div>
             </div>
         </section>
 
-        <!-- 7. EDA REPORTS GALLERY -->
-        <section id="eda-gallery" class="section">
+        <!-- 9. EDA REPORTS GALLERY -->
+        <section id="eda-gallery" class="section secondary-section hidden">
             <div class="section-header">
                 <div>
                     <h2 class="section-title">Exploratory Data Analysis Gallery</h2>
                     <p class="section-subtitle">Visualizations generated during Phase 1 Data Exploration illustrating distributions and correlations.</p>
                 </div>
+                <button type="button" class="btn btn-sm btn-secondary" onclick="switchSection('overview')">&larr; Back to Overview</button>
             </div>
 
             <div class="gallery-grid">
@@ -665,6 +1088,162 @@
 
     </main>
 
+    <!-- AUTHENTICATION MODAL (LOGIN & REGISTRATION) -->
+    <div class="modal hidden" id="auth-modal" onclick="closeAuthModal()">
+        <div class="modal-content auth-modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+            
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab-btn active" id="tab-btn-login" onclick="setAuthTab('login')">Sign In</button>
+                <button type="button" class="auth-tab-btn" id="tab-btn-register" onclick="setAuthTab('register')">Create Account</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="login-form" class="auth-form">
+                <div class="input-field">
+                    <label for="login-email">College Email Address</label>
+                    <input type="email" id="login-email" placeholder="student@college.edu" required>
+                </div>
+                <div class="input-field">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <div class="alert-box error hidden" id="login-error-alert">
+                    <span id="login-error-msg">Error</span>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" id="btn-submit-login">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- REGISTRATION FORM -->
+            <form id="register-form" class="auth-form hidden">
+                <div class="input-field">
+                    <label for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" placeholder="e.g. Aarav Sharma" required>
+                </div>
+                <div class="input-field">
+                    <label for="reg-email">College Email Address</label>
+                    <input type="email" id="reg-email" placeholder="e.g. aarav@college.edu" required>
+                </div>
+                <div class="input-field">
+                    <label for="reg-password">Password (min 6 characters)</label>
+                    <input type="password" id="reg-password" minlength="6" placeholder="Create a secure password" required>
+                </div>
+                <div class="input-field">
+                    <label for="reg-role">Target Career Track</label>
+                    <select id="reg-role">
+                        <option value="Software Developer" selected>Software Developer</option>
+                        <option value="Data Scientist">Data Scientist</option>
+                        <option value="Data Analyst">Data Analyst</option>
+                        <option value="Business Analyst">Business Analyst</option>
+                        <option value="QA Engineer">QA Engineer</option>
+                    </select>
+                </div>
+                <div class="alert-box error hidden" id="reg-error-alert">
+                    <span id="reg-error-msg">Error</span>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" id="btn-submit-register">
+                    Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- UPDATE PROFILE MODAL -->
+    <div class="modal hidden" id="profile-edit-modal" onclick="closeProfileEditModal()">
+        <div class="modal-content profile-modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeProfileEditModal()">&times;</button>
+            <h3 class="modal-title">Update Academic Profile</h3>
+            <p class="modal-desc">Save your verified metrics to track your progress and evaluate badge criteria.</p>
+
+            <form id="edit-profile-form">
+                <div class="input-grid three-col">
+                    <div class="input-field">
+                        <label for="edit-cgpa">CGPA (0 - 10)</label>
+                        <input type="number" id="edit-cgpa" step="0.01" min="0" max="10" required>
+                    </div>
+                    <div class="input-field">
+                        <label for="edit-ssc">SSC (10th) %</label>
+                        <input type="number" id="edit-ssc" step="0.1" min="0" max="100" required>
+                    </div>
+                    <div class="input-field">
+                        <label for="edit-hsc">HSC (12th) %</label>
+                        <input type="number" id="edit-hsc" step="0.1" min="0" max="100" required>
+                    </div>
+                </div>
+
+                <div class="input-grid">
+                    <div class="input-field">
+                        <label for="edit-aptitude">Aptitude Score (0 - 100)</label>
+                        <input type="number" id="edit-aptitude" step="0.1" min="0" max="100" required>
+                    </div>
+                    <div class="input-field">
+                        <label for="edit-soft">Soft Skills Rating (1 - 5)</label>
+                        <input type="number" id="edit-soft" step="0.1" min="1" max="5" required>
+                    </div>
+                </div>
+
+                <div class="input-grid three-col">
+                    <div class="input-field">
+                        <label for="edit-projects">Projects</label>
+                        <input type="number" id="edit-projects" min="0" max="20" required>
+                    </div>
+                    <div class="input-field">
+                        <label for="edit-certs">Certifications</label>
+                        <input type="number" id="edit-certs" min="0" max="20" required>
+                    </div>
+                    <div class="input-field">
+                        <label for="edit-internships">Internships</label>
+                        <input type="number" id="edit-internships" min="0" max="10" required>
+                    </div>
+                </div>
+
+                <div class="input-grid">
+                    <div class="input-field">
+                        <label for="edit-extra">Extracurriculars</label>
+                        <select id="edit-extra">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    <div class="input-field">
+                        <label for="edit-training">Placement Training</label>
+                        <select id="edit-training">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-field">
+                    <label for="edit-role">Target Role</label>
+                    <select id="edit-role">
+                        <option value="Software Developer">Software Developer</option>
+                        <option value="Data Scientist">Data Scientist</option>
+                        <option value="Data Analyst">Data Analyst</option>
+                        <option value="Business Analyst">Business Analyst</option>
+                        <option value="QA Engineer">QA Engineer</option>
+                    </select>
+                </div>
+
+                <div class="checkbox-field">
+                    <input type="checkbox" id="edit-save-snapshot" checked>
+                    <label for="edit-save-snapshot">Record this update as a timestamped snapshot in My Progress</label>
+                </div>
+
+                <div class="alert-box error hidden" id="edit-profile-error">
+                    <span id="edit-profile-error-msg">Error</span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="btn-submit-edit-profile">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeProfileEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- IMAGE LIGHTBOX MODAL -->
     <div class="modal hidden" id="image-modal" onclick="closeLightbox()">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -684,8 +1263,9 @@
             <div class="footer-badges">
                 <span class="tech-badge">Python 3.13</span>
                 <span class="tech-badge">Flask API</span>
+                <span class="tech-badge">SQLite Persistence</span>
                 <span class="tech-badge">Scikit-Learn 1.6.1</span>
-                <span class="tech-badge">SHAP Explainability</span>
+                <span class="tech-badge">Resume Parser</span>
                 <span class="tech-badge">Chart.js 4</span>
             </div>
         </div>

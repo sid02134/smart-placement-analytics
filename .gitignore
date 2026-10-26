@@ -6,3 +6,9 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+*.db
+*.sqlite
+*.sqlite3
+instance/
+uploads/
+scratch/
